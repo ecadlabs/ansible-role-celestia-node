@@ -2,6 +2,8 @@
 
 A role to configure and deploy a [celestia](https://github.com/celestiaorg/celestia-node) node in a docker container.
 
+> :warning: **This project is still a work in progress**: The role is still being worked on and developed. Use at your own risk
+
 ## Role Variables
 ---
 
