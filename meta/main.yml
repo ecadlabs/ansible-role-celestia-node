@@ -3,8 +3,9 @@ galaxy_info:
   role_name: celestia_node
   author: Gino Imbrailo
   namespace: ecadlabs
-  description: Configures and deploys a celestia node in docker
+  description: Configure and deploy a celestia node in docker
   company: ECAD Labs Inc.
+  issue_tracker_url: https://github.com/ecadlabs/ansible-role-celestia-node/issues
 
   license: Apache License 2.0
 
