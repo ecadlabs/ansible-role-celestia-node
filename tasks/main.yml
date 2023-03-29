@@ -1,0 +1,6 @@
+---
+- name: Setup deployment environment
+  ansible.builtin.include_tasks: environment.yml
+
+- name: Deploy the containers
+  ansible.builtin.include_tasks: container-deploy.yml

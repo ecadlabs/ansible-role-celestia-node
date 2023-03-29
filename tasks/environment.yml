@@ -1,0 +1,48 @@
+---
+- name: Docker Network
+  community.docker.docker_network:
+    name: "{{ node_container_network_name }}"
+
+- name: Celestia node directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "0755"
+    owner: "10001"
+    state: directory
+  with_items:
+    - "{{ node_store_path }}"
+    - "{{ node_store_path }}/data"
+
+- name: Celestia copy keys
+  ansible.builtin.copy:
+    src: "{{ node_keys_source_dir }}"
+    dest: "{{ node_store_path }}"
+    mode: "0600"
+    owner: "10001"
+  when: node_keys_source_dir != ""
+
+- name: Celestia node config template
+  ansible.builtin.template:
+    src: "{{ node_template }}"
+    dest: "{{ node_config }}"
+    owner: "10001"
+    mode: "0755"
+  when: node_template != ""
+
+- name: Config file exists check
+  ansible.builtin.stat:
+    path: "{{ node_config }}"
+  register: config_file
+
+# The task below will set the container port mapping list by adding a mapping for the gateway port
+# if the gateway has been enabled by setting node_gateway to true
+- name: Set container port mapping
+  ansible.builtin.set_fact:
+    container_port_mapping:
+      "{{
+          [
+          node_rpc_ext_port + ':' + node_rpc_int_port,
+          node_gateway_ext_port + ':' + node_gateway_int_port if node_gateway else ''
+          ]
+          | reject('eq', '') | list
+      }}"

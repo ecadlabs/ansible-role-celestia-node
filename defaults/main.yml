@@ -1,0 +1,43 @@
+---
+# Container settings
+node_container_name: "celestia-{{ node_type }}-{{ p2p_network }}"
+node_container_network_name: "celestia-{{ p2p_network }}-network"
+
+# P2P settings
+p2p_network: mocha
+
+# Core settings
+core_ip: https://rpc-mocha.pops.one
+core_rpc_port: "26657"
+core_grpc_port: "9090"
+
+# Node settings
+log_level: INFO
+node_type: light
+node_template: ""
+node_keyring_backend: test
+node_keyring_accname: ""
+node_keys_source_dir: ""
+node_version: "0.6.3"
+
+# Node storage
+node_store_path: /srv/celestia-{{ node_type }}-{{ p2p_network }}
+node_config: "{{ node_store_path }}/config.toml"
+
+# Gateway settings
+node_gateway: false
+node_gateway_address: "0.0.0.0"
+node_gateway_int_port: "26659"
+node_gateway_ext_port: "{{ node_gateway_int_port }}"
+
+# Node RPC settings
+node_rpc_address: "0.0.0.0"
+node_rpc_int_port: "26658"
+node_rpc_ext_port: "{{ node_rpc_int_port }}"
+
+# Metrics settings
+node_metrics: false
+node_metrics_endpoint: ""
+
+# Celestia command options
+node_additional_options: []

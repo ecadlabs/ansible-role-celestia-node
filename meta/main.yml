@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  role_name: celestia_node
+  author: Gino Imbrailo
+  namespace: ecadlabs
+  description: Configures and deploys a celestia node in docker
+  company: ECAD Labs Inc.
+
+  license: Apache License 2.0
+
+  min_ansible_version: 2.1
+
+  galaxy_tags:
+    - docker
+    - blockchain
+    - celestia
