@@ -10,9 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout repo
         uses: actions/checkout@v3
-      - name: galaxy
-        uses: robertdebock/galaxy-action@1.2.1
+
+      - name: Release Ansible Role to Galaxy
+        uses: hspaans/ansible-galaxy-action@v1
         with:
-          galaxy_api_key: ${{ secrets.galaxy_api_key }}
+          api_key: ${{ secrets.galaxy_api_key }}
