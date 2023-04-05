@@ -1,0 +1,20 @@
+---
+- name: Celestia node
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install pip package for docker
+      ansible.builtin.include_role:
+        name: geerlingguy.pip
+    - name: Install docker
+      ansible.builtin.include_role:
+        name: geerlingguy.docker
+    - name: Configure and deploy Celestia light node
+      ansible.builtin.include_role:
+        name: ecadlabs.celestia_node
+
+  vars:
+    node_type: light
+    p2p_network: blockspacerace
+    node_store_path: /srv/celestia-light-blockspacerace

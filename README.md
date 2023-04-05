@@ -52,38 +52,25 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
   ```
 
 ## Quickstart
-This quickstart guide will configure and run a `light` node on a debian based operating system.
-1. Install the role using the `ansible-galaxy` command.
+This quickstart guide will configure and run a `light` node on your local debian based operating system. The quickstart guide assumes that you do not have `ansible`, `docker`, or the `docker` python module installed.
+1. Install `ansible`
     ```shell
-    ansible-galaxy install ecadlabs.celestia_node
+    python3 -m pip install --user ansible
     ```
-2. Create a simple `inventory.yml` file
-    ```yaml
-    all:
-      hosts:
-        localhost:
-          ansible_connection: local
+2. Clone the repository and change to the `tests` directory
+    ```shell
+    cd "$HOME"
+    git clone git@github.com:ecadlabs/ansible-role-celestia-node.git
+    cd ansible-role-celestia-node/tests
     ```
-3. Create a simple playbook called `celestia-light-node.yml`. We define three variables in the playbook, `node_type`, `p2p_network`, and `node_store_path`
-    ```yaml
-    - name: Celestia node
-      hosts: localhost
-      become: true
-
-      tasks:
-        - name: Configure and deploy Celestia light node
-          ansible.builtin.include_role:
-            name: ecadlabs.celestia_node
-
-      vars:
-        node_type: light
-        p2p_network: blockspacerace
-        node_store_path: /srv/celestia-light-blockspacerace
+3. Install the `celestia_node` and supporting roles using the `ansible-galaxy` command.
+    ```shell
+    ansible-galaxy install --role-file ./requirements.yml
     ```
-
+    The command will install all roles in the `requirements.yml` file. To make things simpler there are two supporting roles to install `docker` and the `docker` module for python.
 4. Run the playbook
     ```shell
-    ansible-playbook ./celestia-light-node.yml --inventory ./inventory.yml --diff
+    ansible-playbook ./celestia-node-deploy.yml --inventory ./inventory.yml --diff
     ```
 5. Check that the container is running using `docker ps`. The container name should be `celestia-light-blockspacerace` and it should be running and not in a restart loop.
 6. Check the container logs for more information and to make sure that the node is syncing.
