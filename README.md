@@ -60,7 +60,7 @@ This quickstart guide will configure and run a `light` node on your local debian
 2. Clone the repository and change to the `tests` directory
     ```shell
     cd "$HOME"
-    git clone git@github.com:ecadlabs/ansible-role-celestia-node.git
+    git clone https://github.com/ecadlabs/ansible-role-celestia-node.git
     cd ansible-role-celestia-node/tests
     ```
 3. Install the `celestia_node` and supporting roles using the `ansible-galaxy` command.
