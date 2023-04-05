@@ -37,17 +37,57 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 ## Dependencies
 ---
 
-* Docker: [geerlingguy.docker](https://galaxy.ansible.com/geerlingguy/docker)
+* Debian based operating system
+* Ansible 2.9 or higher
+* A user with `sudo` access on the target host
+* Docker Engine on the target host: 
+  Install manually or use an ansible role like [geerlingguy.docker](https://galaxy.ansible.com/geerlingguy/docker)
   ```shell
   ansible-galaxy install geerlingguy.docker
   ```
+* Python Docker module on the target host:
+  Install manually or use an ansible role like [geerlingguy.pip](https://galaxy.ansible.com/geerlingguy/pip)
+  ```shell
+  ansible-galaxy install geerlingguy.pip
+  ```
+
+## Quickstart
+This quickstart guide will configure and run a `light` node on a debian based operating system.
+1. Install the role using the `ansible-galaxy` command.
+    ```shell
+    ansible-galaxy install ecadlabs.celestia_node
+    ```
+2. Create a simple `inventory.yml` file
+    ```yaml
+    all:
+      hosts:
+        localhost:
+          ansible_connection: local
+    ```
+3. Create a simple playbook called `celestia-light-node.yml`. We define three variables in the playbook, `node_type`, `p2p_network`, and 
+    ```yaml
+    - name: Celestia node
+      hosts: localhost
+      become: true
+
+      tasks:
+        - name: Configure and deploy Celestia light node
+          ansible.builtin.include_role:
+            name: ecadlabs.celestia_node
+
+      vars:
+        node_type: light
+        p2p_network: blockspacerace
+        node_store_path: $HOME/celestia-light-blockspacerace
+    ```
+
+4. Run the playbook
+    ```shell
+    ansible-playbook ./celestia-light-node.yml --inventory ./inventory.yml --diff
+    ```
 
 ## Example Playbooks
 ---
-Installing the role is as simple as running the `ansible-galaxy` command.
-```shell
-ansible-galaxy install ecadlabs.celestia_node
-```
 
 In most cases the `init` and `start` containers will use the exact same variables and be started the same way. The main difference for the init container is the exclusion of the `node_config` variable. If the `node_config` variable is included here, the init will fail because the node will look for a config file that does not exist.
 
