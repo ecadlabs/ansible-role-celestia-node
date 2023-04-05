@@ -17,7 +17,7 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 | `node_config` | `{{ node_store_path }}/config.toml` | The path to the desired celestia node configuration file on the system |
 | `node_keyring_accname` | `""` | The account in the keyring for the node to start with |
 | `node_type` | `light` | The celestia node type. This can be `full`, `light`, or `bridge` |
-| `node_version` | `0.8.1` | The version of the celestia-node docker image |
+| `node_version` | `v0.8.1` | The version of the celestia-node docker image |
 | `p2p_network` | `blockspacerace` | The celestia network that the node will operate on |
 | `core_ip` | `https://rpc-2.celestia.nodes.guru` | Indicates the node to connect to the given core node. |
 | `core_rpc_port` | `26657` | Set a custom RPC port for the core node connection. The --core.ip flag must also be provided. |
