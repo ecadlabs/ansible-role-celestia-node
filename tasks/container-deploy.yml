@@ -27,9 +27,6 @@
       - type: bind
         source: "{{ node_store_path }}"
         target: "{{ node_store_path }}"
-  when:
-    - not config_file.stat.exists
-    - node_template == ""
 
 - name: Celestia start node container
   become: true

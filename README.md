@@ -2,7 +2,7 @@
 
 A role to configure and deploy a [celestia](https://github.com/celestiaorg/celestia-node) node in a docker container.
 
-> :warning: **This project is still a work in progress**: The role is still being worked on and developed. Use at your own risk
+> :warning: **This project is still a work in progress**: The role is still being worked on and developed. Please use with caution if you already have a node deployed or existing data that you do not want to lose.
 
 ## Role Variables
 ---
@@ -17,10 +17,9 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 | `node_config` | `{{ node_store_path }}/config.toml` | The path to the desired celestia node configuration file on the system |
 | `node_keyring_accname` | `""` | The account in the keyring for the node to start with |
 | `node_type` | `light` | The celestia node type. This can be `full`, `light`, or `bridge` |
-| `node_version` | `0.6.3` | The version of the celestia-node docker image |
-| `node_template` | `""` | The name of the config template to use with the node. This is not a requirement and should not be used together with `node_additional_options` |
-| `p2p_network` | `mocha` | The celestia network that the node will operate on |
-| `core_ip` | `https://rpc-mocha.pops.one` | Indicates the node to connect to the given core node. |
+| `node_version` | `0.8.1` | The version of the celestia-node docker image |
+| `p2p_network` | `blockspacerace` | The celestia network that the node will operate on |
+| `core_ip` | `https://rpc-2.celestia.nodes.guru` | Indicates the node to connect to the given core node. |
 | `core_rpc_port` | `26657` | Set a custom RPC port for the core node connection. The --core.ip flag must also be provided. |
 | `core_grpc_port` | `9090` | Set a custom gRPC port for the core node connection. The --core.ip flag must also be provided. |
 | `node_gateway` | `false` | Whether or not the node should be started with the gateway enabled |
@@ -45,6 +44,10 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 
 ## Example Playbooks
 ---
+Installing the role is as simple as running the `ansible-galaxy` command.
+```shell
+ansible-galaxy install ecadlabs.celestia_node
+```
 
 In most cases the `init` and `start` containers will use the exact same variables and be started the same way. The main difference for the init container is the exclusion of the `node_config` variable. If the `node_config` variable is included here, the init will fail because the node will look for a config file that does not exist.
 
@@ -61,7 +64,7 @@ In most cases the `init` and `start` containers will use the exact same variable
     node_keyring_backend: test
     node_keyring_accname: test_account
     node_type: full
-    node_version: v0.8.0
+    node_version: v0.8.1
     p2p_network: blockspacerace
     core_ip: https://rpc-2.celestia.nodes.guru
     node_gateway_address: 0.0.0.0

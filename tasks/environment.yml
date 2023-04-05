@@ -21,14 +21,6 @@
     owner: "10001"
   when: node_keys_source_dir != ""
 
-- name: Celestia node config template
-  ansible.builtin.template:
-    src: "{{ node_template }}"
-    dest: "{{ node_config }}"
-    owner: "10001"
-    mode: "0755"
-  when: node_template != ""
-
 - name: Config file exists check
   ansible.builtin.stat:
     path: "{{ node_config }}"

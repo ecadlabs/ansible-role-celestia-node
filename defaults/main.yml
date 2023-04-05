@@ -4,21 +4,20 @@ node_container_name: "celestia-{{ node_type }}-{{ p2p_network }}"
 node_container_network_name: "celestia-{{ p2p_network }}-network"
 
 # P2P settings
-p2p_network: mocha
+p2p_network: blockspacerace
 
 # Core settings
-core_ip: https://rpc-mocha.pops.one
+core_ip: https://rpc-2.celestia.nodes.guru
 core_rpc_port: "26657"
 core_grpc_port: "9090"
 
 # Node settings
 log_level: INFO
 node_type: light
-node_template: ""
 node_keyring_backend: test
 node_keyring_accname: ""
 node_keys_source_dir: ""
-node_version: "0.6.3"
+node_version: "0.8.1"
 
 # Node storage
 node_store_path: /srv/celestia-{{ node_type }}-{{ p2p_network }}
