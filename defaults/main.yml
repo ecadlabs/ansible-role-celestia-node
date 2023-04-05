@@ -17,14 +17,14 @@ node_type: light
 node_keyring_backend: test
 node_keyring_accname: ""
 node_keys_source_dir: ""
-node_version: "0.8.1"
+node_version: "v0.8.1"
 
 # Node storage
 node_store_path: /srv/celestia-{{ node_type }}-{{ p2p_network }}
 node_config: "{{ node_store_path }}/config.toml"
 
 # Gateway settings
-node_gateway: false
+node_gateway: true
 node_gateway_address: "0.0.0.0"
 node_gateway_int_port: "26659"
 node_gateway_ext_port: "{{ node_gateway_int_port }}"
