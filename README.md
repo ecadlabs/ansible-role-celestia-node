@@ -33,6 +33,8 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 | `node_metrics` | `false` | Whether or not the node should push metrics to a collector |
 | `node_metrics_endpoint` | `""` | The endpoint for the metrics OTEL collector |
 | `node_keys_source_dir` | `""` | If you would like to copy previously generated custom keys to the node. This should be the entire `keys` directory |
+| `node_user_id` | `10001` | The user ID that will be used to run the `celestia` process inside the container |
+| `node_group_id` | `{{ node_user_id }}` | The group ID that will be used to run the `celestia` process inside the container |
 
 ## Dependencies
 ---
@@ -52,10 +54,10 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
   ```
 
 ## Quickstart
-This quickstart guide will configure and run a `light` node on your local debian based operating system. The quickstart guide assumes that you do not have `ansible`, `docker`, or the `docker` python module installed.
-1. Install `ansible`
+This quickstart guide will configure and run a `light` node on a debian based operating system.
+1. Install the role using the `ansible-galaxy` command.
     ```shell
-    python3 -m pip install --user ansible
+    ansible-galaxy install ecadlabs.celestia_node
     ```
 2. Clone the repository and change to the `tests` directory
     ```shell
@@ -70,7 +72,11 @@ This quickstart guide will configure and run a `light` node on your local debian
     The command will install all roles in the `requirements.yml` file. To make things simpler there are two supporting roles to install `docker` and the `docker` module for python.
 4. Run the playbook
     ```shell
-    ansible-playbook ./celestia-node-deploy.yml --inventory ./inventory.yml --diff
+    ansible-playbook ./celestia-node.yml \
+      --inventory ./inventory.yml --diff \
+      --extra-vars "ansible_python_interpreter=/usr/bin/python3" \
+      --extra-vars "node_store_path=$HOME/celestia-light-blockspacerace" \
+      --extra-vars "node_user_id=$(id -u)"
     ```
 5. Check that the container is running using `docker ps`. The container name should be `celestia-light-blockspacerace` and it should be running and not in a restart loop.
 6. Check the container logs for more information and to make sure that the node is syncing.

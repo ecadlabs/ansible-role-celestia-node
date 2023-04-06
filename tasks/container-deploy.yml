@@ -1,6 +1,5 @@
 ---
 - name: Celestia init node container
-  become: true
   community.docker.docker_container:
     name: "{{ node_container_name }}-init"
     image: "ghcr.io/celestiaorg/celestia-node:{{ node_version }}"
@@ -11,6 +10,7 @@
     env:
       NODE_TYPE: "{{ node_type }}"
       P2P_NETWORK: "{{ p2p_network }}"
+    user: "{{ node_user_id }}:{{ node_group_id }}"
     command: >
       /bin/celestia {{ node_type }} init
       {{ '--core.ip ' + core_ip if core_ip | length > 0 else '' }}
@@ -29,7 +29,6 @@
         target: "{{ node_store_path }}"
 
 - name: Celestia start node container
-  become: true
   community.docker.docker_container:
     name: "{{ node_container_name }}"
     image: "ghcr.io/celestiaorg/celestia-node:{{ node_version }}"
@@ -41,6 +40,7 @@
       NODE_TYPE: "{{ node_type }}"
       P2P_NETWORK: "{{ p2p_network }}"
     ports: "{{ container_port_mapping }}"
+    user: "{{ node_user_id }}:{{ node_group_id }}"
     command: >
       /bin/celestia {{ node_type }} start
       {{ '--core.ip ' + core_ip if core_ip | length > 0 else '' }}

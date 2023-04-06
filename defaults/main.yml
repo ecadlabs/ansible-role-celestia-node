@@ -17,7 +17,9 @@ node_type: light
 node_keyring_backend: test
 node_keyring_accname: ""
 node_keys_source_dir: ""
-node_version: "v0.8.1"
+node_version: "v0.8.2"
+node_user_id: "10001"
+node_group_id: "{{ node_user_id }}"
 
 # Node storage
 node_store_path: /srv/celestia-{{ node_type }}-{{ p2p_network }}
