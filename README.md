@@ -95,6 +95,11 @@ This quickstart guide will configure and run a `light` node on your local debian
 8. The playbook will create the required directories and docker volume mounts to persist the node data, keys, etc. Check that the files are available in `"$PWD/celestia-light-blockspacerace"`.
 
 > :warning: There can sometimes be an issue when deploying locally where the python modules are not found. Ensure that the modules are installed for your user and that the correct `ansible_python_interpreter` has been set.
+
+## Useful notes
+* For the time being, the `init` and `start` containers are separate. The init container will run first and only for the duration of the `init` command.
+* The `init` container will not run if the `node_config` file already exists. This is to prevent the `init` container from overwriting the existing config file. To re-initialize the node, follow the directions on [clearing the data store](https://docs.celestia.org/nodes/celestia-node/#clearing-the-data-store) and run the playbook again.
+* There is currently an issue with the `celestia-node` where the node will crash on restart. If this happens, follow the directions on [clearing the data store](https://docs.celestia.org/nodes/celestia-node/#clearing-the-data-store) and run the playbook again.
 ## Example Playbooks
 ---
 
