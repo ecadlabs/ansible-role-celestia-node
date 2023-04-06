@@ -17,13 +17,13 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 | `node_config` | `{{ node_store_path }}/config.toml` | The path to the desired celestia node configuration file on the system |
 | `node_keyring_accname` | `""` | The account in the keyring for the node to start with |
 | `node_type` | `light` | The celestia node type. This can be `full`, `light`, or `bridge` |
-| `node_version` | `v0.8.1` | The version of the celestia-node docker image |
+| `node_version` | `v0.8.2` | The version of the celestia-node docker image |
 | `p2p_network` | `blockspacerace` | The celestia network that the node will operate on |
 | `core_ip` | `https://rpc-2.celestia.nodes.guru` | Indicates the node to connect to the given core node. |
 | `core_rpc_port` | `26657` | Set a custom RPC port for the core node connection. The --core.ip flag must also be provided. |
 | `core_grpc_port` | `9090` | Set a custom gRPC port for the core node connection. The --core.ip flag must also be provided. |
-| `node_gateway` | `true` | Whether or not the node should be started with the gateway enabled |
-| `node_gateway_address` | `0.0.0.0` | Set a custom gateway listen address |
+| `node_gateway` | `true` | Whether or not the node should be started with the gateway enabled. If set to false the container will not expose the gateway port |
+| `node_gateway_address` | `0.0.0.0` | Set a custom gateway listen address. By default the address is set to 0.0.0.0 because the container does not share the host network by default and this is the only way to reach the gateway running within the container. |
 | `node_gateway_int_port` | `26659` | Set a custom gateway port |
 | `node_gateway_ext_port` | `{{ node_gateway_int_port }}` | Set the gateway port exposed by the container |
 | `log_level` | `INFO` | DEBUG, INFO, WARN, ERROR, DPANIC, PANIC, FATAL. This can be done for each module by adding the specific module and flag to the `node_additional_options` list |
@@ -54,10 +54,14 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
   ```
 
 ## Quickstart
-This quickstart guide will configure and run a `light` node on a debian based operating system.
-1. Install the role using the `ansible-galaxy` command.
+> :information_source: **If you already have `ansible` and `docker` setup**: start at point 2. and change the value of `install_docker` to `false` at point 4.
+
+This quickstart guide will configure and run a `light` node on your local debian based operating system. The quickstart guide assumes that you do not have `ansible`, `docker`, or the `docker` python module installed.
+1. Install `ansible`
     ```shell
-    ansible-galaxy install ecadlabs.celestia_node
+    sudo apt-get update && sudo apt-get install -y python3-pip
+    python3 -m pip install --user ansible
+    export PATH=$PATH:$HOME/.local/bin
     ```
 2. Clone the repository and change to the `tests` directory
     ```shell
@@ -72,11 +76,12 @@ This quickstart guide will configure and run a `light` node on a debian based op
     The command will install all roles in the `requirements.yml` file. To make things simpler there are two supporting roles to install `docker` and the `docker` module for python.
 4. Run the playbook
     ```shell
-    ansible-playbook ./celestia-node.yml \
+    ansible-playbook ./celestia-deploy.yml \
       --inventory ./inventory.yml --diff \
       --extra-vars "ansible_python_interpreter=/usr/bin/python3" \
-      --extra-vars "node_store_path=$HOME/celestia-light-blockspacerace" \
-      --extra-vars "node_user_id=$(id -u)"
+      --extra-vars "node_store_path=$PWD/celestia-light-blockspacerace" \
+      --extra-vars "node_user_id=$(id -u)" \
+      --extra-vars "install_docker=true"
     ```
 5. Check that the container is running using `docker ps`. The container name should be `celestia-light-blockspacerace` and it should be running and not in a restart loop.
 6. Check the container logs for more information and to make sure that the node is syncing.
@@ -87,7 +92,7 @@ This quickstart guide will configure and run a `light` node on a debian based op
     ```shell
     curl localhost:26659/head
     ```
-7. The playbook will create the required directories and docker volume mounts to persist the node data, keys, etc. Check that the files are available in `/srv/celestia-light-blockspacerace`. These files are owned by the user with ID 10001, you will need to use `sudo` to view the keys directory.
+8. The playbook will create the required directories and docker volume mounts to persist the node data, keys, etc. Check that the files are available in `"$PWD/celestia-light-blockspacerace"`.
 
 > :warning: There can sometimes be an issue when deploying locally where the python modules are not found. Ensure that the modules are installed for your user and that the correct `ansible_python_interpreter` has been set.
 ## Example Playbooks
