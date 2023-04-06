@@ -27,6 +27,8 @@
       - type: bind
         source: "{{ node_store_path }}"
         target: "{{ node_store_path }}"
+  when:
+    - not config_file.stat.exists
 
 - name: Celestia start node container
   community.docker.docker_container:
