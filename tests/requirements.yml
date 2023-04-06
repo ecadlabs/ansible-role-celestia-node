@@ -1,0 +1,5 @@
+---
+roles:
+  - name: ecadlabs.celestia_node
+  - name: geerlingguy.docker
+  - name: geerlingguy.pip

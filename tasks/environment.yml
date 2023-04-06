@@ -7,7 +7,8 @@
   ansible.builtin.file:
     path: "{{ item }}"
     mode: "0755"
-    owner: "10001"
+    owner: "{{ node_user_id }}"
+    group: "{{ node_group_id }}"
     state: directory
   with_items:
     - "{{ node_store_path }}"
@@ -18,7 +19,8 @@
     src: "{{ node_keys_source_dir }}"
     dest: "{{ node_store_path }}"
     mode: "0600"
-    owner: "10001"
+    owner: "{{ node_user_id }}"
+    group: "{{ node_group_id }}"
   when: node_keys_source_dir != ""
 
 - name: Config file exists check
