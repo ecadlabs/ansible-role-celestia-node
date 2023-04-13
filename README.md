@@ -52,6 +52,12 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
   ```shell
   ansible-galaxy install geerlingguy.pip
   ```
+  
+## Installation
+Installing the role is as simple as running the following
+```shell
+ansible-galaxy install ecadlabs.celestia_node
+```
 
 ## Quickstart
 > :information_source: **If you already have `ansible` and `docker` setup**: start at point 2. and change the value of `install_docker` to `false` at point 4.
