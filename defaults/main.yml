@@ -7,7 +7,7 @@ node_container_network_name: "celestia-{{ p2p_network }}-network"
 p2p_network: blockspacerace
 
 # Core settings
-core_ip: https://rpc-2.celestia.nodes.guru
+core_ip: http://rpc-celestia.gpvalidator.com
 core_rpc_port: "26657"
 core_grpc_port: "9090"
 

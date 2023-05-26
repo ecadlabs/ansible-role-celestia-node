@@ -1,2 +1,3 @@
 files/*.info
 *vault*
+.vscode
