@@ -17,9 +17,9 @@ A role to configure and deploy a [celestia](https://github.com/celestiaorg/celes
 | `node_config` | `{{ node_store_path }}/config.toml` | The path to the desired celestia node configuration file on the system |
 | `node_keyring_accname` | `""` | The account in the keyring for the node to start with |
 | `node_type` | `light` | The celestia node type. This can be `full`, `light`, or `bridge` |
-| `node_version` | `v0.8.2` | The version of the celestia-node docker image |
-| `p2p_network` | `blockspacerace` | The celestia network that the node will operate on |
-| `core_ip` | `https://rpc-2.celestia.nodes.guru` | Indicates the node to connect to the given core node. |
+| `node_version` | `v0.10.0` | The version of the celestia-node docker image |
+| `p2p_network` | `blockspacerace-0` | The celestia network that the node will operate on |
+| `core_ip` | `http://rpc-celestia.gpvalidator.com` | Indicates the node to connect to the given core node. |
 | `core_rpc_port` | `26657` | Set a custom RPC port for the core node connection. The --core.ip flag must also be provided. |
 | `core_grpc_port` | `9090` | Set a custom gRPC port for the core node connection. The --core.ip flag must also be provided. |
 | `node_gateway` | `true` | Whether or not the node should be started with the gateway enabled. If set to false the container will not expose the gateway port |
@@ -59,6 +59,12 @@ Installing the role is as simple as running the following
 ansible-galaxy install ecadlabs.celestia_node
 ```
 
+OR
+  
+```shell
+ansible-galaxy install ecadlabs.celestia_node --force
+```
+
 ## Quickstart
 > :information_source: **If you already have `ansible` and `docker` setup**: start at point 2. and change the value of `install_docker` to `false` at point 4.
 
@@ -78,7 +84,7 @@ This quickstart guide will configure and run a `light` node on your local debian
     ```
 3. Install the `celestia_node` and supporting roles using the `ansible-galaxy` command.
     ```shell
-    ansible-galaxy install --role-file ./requirements.yml
+    ansible-galaxy install --role-file ./requirements.yml --force
     ```
     The command will install all roles in the `requirements.yml` file. To make things simpler there are two supporting roles to install `docker` and the `docker` module for python.
 4. Run the playbook
@@ -90,27 +96,22 @@ This quickstart guide will configure and run a `light` node on your local debian
       --extra-vars "node_user_id=$(id -u)" \
       --extra-vars "install_docker=true"
     ```
-5. Check that the container is running using `docker ps`. The container name should be `celestia-light-blockspacerace` and it should be running and not in a restart loop.
+5. Check that the container is running using `docker ps`. The container name should be `celestia-light-blockspacerace-0` and it should be running and not in a restart loop.
 6. Check the container logs for more information and to make sure that the node is syncing.
     ```shell
-    docker logs --follow --tail 100 celestia-light-blockspacerace
+    docker logs --follow --tail 100 celestia-light-blockspacerace-0
     ```
 7. Test to make sure that you can reach the node gateway.
     ```shell
     curl localhost:26659/head
     ```
-8. The playbook will create the required directories and docker volume mounts to persist the node data, keys, etc. Check that the files are available in `"$PWD/celestia-light-blockspacerace"`.
+8. The playbook will create the required directories and docker volume mounts to persist the node data, keys, etc. Check that the files are available in `"$PWD/celestia-light-blockspacerace-0"`.
 
 > :warning: There can sometimes be an issue when deploying locally where the python modules are not found. Ensure that the modules are installed for your user and that the correct `ansible_python_interpreter` has been set.
 
-## Useful notes
-* For the time being, the `init` and `start` containers are separate. The init container will run first and only for the duration of the `init` command.
-* The `init` container will not run if the `node_config` file already exists. This is to prevent the `init` container from overwriting the existing config file. To re-initialize the node, follow the directions on [clearing the data store](https://docs.celestia.org/nodes/celestia-node/#clearing-the-data-store) and run the playbook again.
-* There is currently an issue with the `celestia-node` where the node will crash on restart. If this happens, follow the directions on [clearing the data store](https://docs.celestia.org/nodes/celestia-node/#clearing-the-data-store) and run the playbook again.
 ## Example Playbooks
 ---
-
-In most cases the `init` and `start` containers will use the exact same variables and be started the same way. The main difference for the init container is the exclusion of the `node_config` variable. If the `node_config` variable is included here, the init will fail because the node will look for a config file that does not exist.
+Using this playbook as is will not work, please adjust the variables to your needs.
 
 ```yaml
 - name: Celestia node
@@ -125,8 +126,8 @@ In most cases the `init` and `start` containers will use the exact same variable
     node_keyring_backend: test
     node_keyring_accname: test_account
     node_type: full
-    node_version: v0.8.1
-    p2p_network: blockspacerace
+    node_version: v0.10.0
+    p2p_network: blockspacerace00
     core_ip: https://rpc-2.celestia.nodes.guru
     node_gateway_address: 0.0.0.0
     node_gateway: true

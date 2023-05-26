@@ -1,37 +1,4 @@
 ---
-- name: Celestia init node container
-  community.docker.docker_container:
-    name: "{{ node_container_name }}-init"
-    image: "ghcr.io/celestiaorg/celestia-node:{{ node_version }}"
-    detach: false
-    cleanup: true
-    networks: [name: "{{ node_container_network_name }}"]
-    networks_cli_compatible: true
-    env:
-      NODE_TYPE: "{{ node_type }}"
-      P2P_NETWORK: "{{ p2p_network }}"
-    user: "{{ node_user_id }}:{{ node_group_id }}"
-    command: >
-      /bin/celestia {{ node_type }} init
-      {{ '--core.ip ' + core_ip if core_ip | length > 0 else '' }}
-      {{ '--core.grpc.port ' + core_grpc_port if core_grpc_port | length > 0 else '' }}
-      {{ '--core.rpc.port ' + core_rpc_port if core_rpc_port | length > 0 else '' }}
-      {{ '--gateway' if node_gateway else '' }}
-      {{ '--gateway.addr ' + node_gateway_address if (node_gateway_address | length > 0) and node_gateway else '' }}
-      {{ '--gateway.port ' + node_gateway_int_port | string if (node_gateway_int_port | length > 0) and node_gateway else '' }}
-      {{ '--node.store ' + node_store_path if node_store_path | length > 0 else '' }}
-      {{ '--keyring.accname ' + node_keyring_accname if node_keyring_accname | length > 0 else '' }}
-      {{ '--keyring.backend ' + node_keyring_backend if node_keyring_backend | length > 0 else '' }}
-      {{ '--metrics.endpoint ' + node_metrics_endpoint if node_metrics_endpoint | length > 0 else '' }}
-      {{ '--metrics' if node_metrics else '' }}
-      {{ '--p2p.network ' + p2p_network if p2p_network | length > 0 else '' }}
-    mounts:
-      - type: bind
-        source: "{{ node_store_path }}"
-        target: "{{ node_store_path }}"
-  when:
-    - not config_file.stat.exists
-
 - name: Celestia start node container
   community.docker.docker_container:
     name: "{{ node_container_name }}"
@@ -46,15 +13,13 @@
     ports: "{{ container_port_mapping }}"
     user: "{{ node_user_id }}:{{ node_group_id }}"
     command: >
-      /bin/celestia {{ node_type }} start
+      celestia {{ node_type }} start
       {{ '--core.ip ' + core_ip if core_ip | length > 0 else '' }}
       {{ '--core.grpc.port ' + core_grpc_port if core_grpc_port | length > 0 else '' }}
       {{ '--core.rpc.port ' + core_rpc_port if core_rpc_port | length > 0 else '' }}
       {{ '--gateway' if node_gateway else '' }}
       {{ '--gateway.addr ' + node_gateway_address if (node_gateway_address | length > 0) and node_gateway else '' }}
       {{ '--gateway.port ' + node_gateway_int_port | string if (node_gateway_int_port | length > 0) and node_gateway else '' }}
-      {{ '--node.store ' + node_store_path if node_store_path | length > 0 else '' }}
-      {{ '--node.config ' + node_config if node_config | length > 0 else '' }}
       {{ '--keyring.accname ' + node_keyring_accname if node_keyring_accname | length > 0 else '' }}
       {{ '--keyring.backend ' + node_keyring_backend if node_keyring_backend | length > 0 else '' }}
       {{ '--metrics.endpoint ' + node_metrics_endpoint if node_metrics_endpoint | length > 0 else '' }}
@@ -64,4 +29,4 @@
     mounts:
       - type: bind
         source: "{{ node_store_path }}"
-        target: "{{ node_store_path }}"
+        target: "/home/celestia/.celestia-{{ node_type }}-{{ p2p_network }}"
