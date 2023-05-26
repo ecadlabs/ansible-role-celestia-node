@@ -14,6 +14,8 @@
     command: >
       /bin/celestia {{ node_type }} init
       {{ '--core.ip ' + core_ip if core_ip | length > 0 else '' }}
+      {{ '--core.grpc.port ' + core_grpc_port if core_grpc_port | length > 0 else '' }}
+      {{ '--core.rpc.port ' + core_rpc_port if core_rpc_port | length > 0 else '' }}
       {{ '--gateway' if node_gateway else '' }}
       {{ '--gateway.addr ' + node_gateway_address if (node_gateway_address | length > 0) and node_gateway else '' }}
       {{ '--gateway.port ' + node_gateway_int_port | string if (node_gateway_int_port | length > 0) and node_gateway else '' }}
@@ -46,6 +48,8 @@
     command: >
       /bin/celestia {{ node_type }} start
       {{ '--core.ip ' + core_ip if core_ip | length > 0 else '' }}
+      {{ '--core.grpc.port ' + core_grpc_port if core_grpc_port | length > 0 else '' }}
+      {{ '--core.rpc.port ' + core_rpc_port if core_rpc_port | length > 0 else '' }}
       {{ '--gateway' if node_gateway else '' }}
       {{ '--gateway.addr ' + node_gateway_address if (node_gateway_address | length > 0) and node_gateway else '' }}
       {{ '--gateway.port ' + node_gateway_int_port | string if (node_gateway_int_port | length > 0) and node_gateway else '' }}
