@@ -23,11 +23,6 @@
     group: "{{ node_group_id }}"
   when: node_keys_source_dir != ""
 
-- name: Config file exists check
-  ansible.builtin.stat:
-    path: "{{ node_config }}"
-  register: config_file
-
 # The task below will set the container port mapping list by adding a mapping for the gateway port
 # if the gateway has been enabled by setting node_gateway to true
 - name: Set container port mapping

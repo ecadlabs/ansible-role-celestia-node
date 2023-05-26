@@ -4,7 +4,7 @@ node_container_name: "celestia-{{ node_type }}-{{ p2p_network }}"
 node_container_network_name: "celestia-{{ p2p_network }}-network"
 
 # P2P settings
-p2p_network: blockspacerace
+p2p_network: blockspacerace-0
 
 # Core settings
 core_ip: http://rpc-celestia.gpvalidator.com
@@ -17,13 +17,12 @@ node_type: light
 node_keyring_backend: test
 node_keyring_accname: ""
 node_keys_source_dir: ""
-node_version: "v0.8.2"
+node_version: "0.10.0"
 node_user_id: "10001"
 node_group_id: "{{ node_user_id }}"
 
 # Node storage
 node_store_path: /srv/celestia-{{ node_type }}-{{ p2p_network }}
-node_config: "{{ node_store_path }}/config.toml"
 
 # Gateway settings
 node_gateway: true

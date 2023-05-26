@@ -22,4 +22,4 @@
 
   vars:
     node_type: light
-    p2p_network: blockspacerace
+    p2p_network: blockspacerace-0
