@@ -127,7 +127,7 @@ Using this playbook as is will not work, please adjust the variables to your nee
     node_keyring_accname: test_account
     node_type: full
     node_version: v0.10.0
-    p2p_network: blockspacerace00
+    p2p_network: blockspacerace-0
     core_ip: https://rpc-2.celestia.nodes.guru
     node_gateway_address: 0.0.0.0
     node_gateway: true
